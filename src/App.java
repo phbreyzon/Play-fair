@@ -55,7 +55,7 @@ public class App {
             msgmatrix[i] = newPair;
         }
         System.out.println(msgmatrix.toString());
-
+        s.close();
 
     }
 
@@ -66,7 +66,6 @@ public class App {
      * @return
      */
     public static char[] computeNewPair( char[] target, char[][] reference) {
-        Object finalmatrix;
         // Only works correctly if both characters really are in the reference matrix, otherwise -1 == -1
           if(rowOfReference(target[0],  reference) == rowOfReference(target[1], reference)) {
             int newColFirst =(colOfReference(target[0], reference)+ 1)%5;
