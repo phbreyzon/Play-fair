@@ -15,6 +15,7 @@ public class App {
         System.out.println("Gebe das Keyword ein: ");
         String input = s.next();
         char[] finalvector = vector(alph, input);
+        // erste Arraydimension: Zeilennummer
         char[][] finalmatrix = new char[5][5];
         finalmatrix = vectorToMatrix(finalmatrix, finalvector, 5, 5);
         
@@ -43,15 +44,64 @@ public class App {
 
         // making message matrix
         char[][] msgmatrix = new char[message.length() / 2][2];
+
+        // Inner array: pair of chars
         msgmatrix = vectorToMatrix(msgmatrix, msgarray, message.length() / 2, 2);
        
         // Encryption
-        
+        for (int i = 0; i < msgmatrix.length; i++) {
+            char[] pair = msgmatrix[i];
+            char[] newPair = computeNewPair(pair, finalmatrix);
+            msgmatrix[i] = newPair;
+        }
 
-        
-        
-        
+    }
 
+    /**
+     * 
+     * @param target
+     * @param reference Coding matrix (Square)
+     * @return
+     */
+    public static char[] computeNewPair( char[] target, char[][] reference) {
+        Object finalmatrix;
+        // Only works correctly if both characters really are in the reference matrix, otherwise -1 == -1
+          if(rowOfReference(target[0],  reference) == rowOfReference(target[1], reference)) {
+            int newColFirst =(colOfReference(target[0], reference)+ 1)%5;
+            int newColSecond =(colOfReference(target[1], reference)+ 1)%5;
+            return new char[] {
+                reference[rowOfReference(target[0], reference)][newColFirst],reference[rowOfReference(target[0], reference)][newColSecond] 
+            };
+          }
+          else if(colOfReference(target[0], reference) == colOfReference(target[1], reference)){
+            
+          }
+          else{
+
+          }
+    
+    }
+
+    public static int rowOfReference(char c, char[][] reference) {
+        for(int row = 0; row < reference.length; row++){
+            for(int col = 0; col < reference[row].length; col++){
+                if(c == reference[row][col]){
+                    return row;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static int colOfReference(char c, char[][] reference) {
+        for(int row = 0; row < reference.length; row++){
+            for(int col = 0; col < reference[row].length; col++){
+                if(c == reference[row][col]){
+                    return col;
+                }
+            }
+        }
+        return -1;
     }
 
     public static char[][] vectorToMatrix(char[][] matrix, char[] vector, int height, int lenght) {
