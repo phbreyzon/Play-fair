@@ -54,6 +54,8 @@ public class App {
             char[] newPair = computeNewPair(pair, finalmatrix);
             msgmatrix[i] = newPair;
         }
+        System.out.println(msgmatrix.toString());
+
 
     }
 
@@ -74,10 +76,16 @@ public class App {
             };
           }
           else if(colOfReference(target[0], reference) == colOfReference(target[1], reference)){
-            
-          }
+            int newRowFirst =(rowOfReference(target[0], reference)+ 1)%5;
+            int newRowSecond =(rowOfReference(target[1], reference)+ 1)%5;
+            return new char[] {
+                reference[newRowFirst][colOfReference(target[0], reference)],reference[newRowSecond][colOfReference(target[1], reference)]
+          };
+        }
           else{
-
+            return new char[]{
+                reference[rowOfReference(target[1], reference)][colOfReference(target[0], reference)], reference[rowOfReference(target[0], reference)][colOfReference(target[1], reference)]
+            };
           }
     
     }
