@@ -1,11 +1,18 @@
 import java.util.Scanner;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.sound.midi.Soundbank;
+
 import java.util.Arrays;
+import java.util.List;
 
 
 
 // Feedback tool:
 // Bei der 1. Submition gibt es immer 1  unknown error
-
+// Das Ganze muss man in einer Funktion verpacken
 public class App {
     private static final String alph = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; 
     public static void main(String[] args) throws Exception {
@@ -14,18 +21,38 @@ public class App {
         Scanner s = new Scanner(System.in);
         System.out.println("Gebe das Keyword ein: ");
         String input = s.next();
-        char[] finalvector = vector(alph, input);
-        // erste Arraydimension: Zeilennummer
-        char[][] finalmatrix = new char[5][5];
-        finalmatrix = vectorToMatrix(finalmatrix, finalvector, 5, 5);
-        
+      
         // Getting message
         System.out.println("Gebe die Message ein: ");
         String message = s.nextLine();
         do{
             message = s.nextLine();
         }while(message == "");
-       
+
+        s.close();
+
+        String output = encode(input, message);
+
+
+        System.out.println(output);
+
+        /*
+        StringJoiner sj = new StringJoiner(System.lineSeparator());
+        for (char[] row : msgmatrix) {
+            sj.add(Arrays.toString(row));
+        }
+        String result = sj.toString();
+        System.out.println(result);
+*/
+    }
+
+    private static String encode(String input, String message) {
+        char[] finalvector = vector(alph, input);
+        // erste Arraydimension: Zeilennummer
+        char[][] finalmatrix = new char[5][5];
+        finalmatrix = vectorToMatrix(finalmatrix, finalvector, 5, 5);
+        
+         
         // Preparing the message Vector
         message = message.replaceAll("\\s+","");
         message = message.toUpperCase();
@@ -54,9 +81,22 @@ public class App {
             char[] newPair = computeNewPair(pair, finalmatrix);
             msgmatrix[i] = newPair;
         }
-        System.out.println(msgmatrix.toString());
-        s.close();
+        
 
+        StringJoiner joiner = new StringJoiner("");
+        Arrays.stream(msgmatrix).map(x -> {
+            Character[] ca = new Character[x.length];
+            for (int i = 0; i < x.length; i++) {
+                ca[i] = x[i];
+            }
+            return ca;
+        }).flatMap(x -> Arrays.stream(x)).forEach(x -> joiner.add(Character.toString(x)));
+        String output = joiner.toString();
+        return output;
+    }
+
+    void print(char[] x) {
+System.out.println(Arrays.toString(x));
     }
 
     /**
@@ -86,6 +126,7 @@ public class App {
                 reference[rowOfReference(target[1], reference)][colOfReference(target[0], reference)], reference[rowOfReference(target[0], reference)][colOfReference(target[1], reference)]
             };
           }
+          
     
     }
 
