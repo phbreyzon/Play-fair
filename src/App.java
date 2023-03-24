@@ -1,13 +1,3 @@
-import java.util.Scanner;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.sound.midi.Soundbank;
-
-import java.util.Arrays;
-import java.util.List;
-
 
 
 // Feedback tool:
@@ -18,9 +8,9 @@ public class App {
     public static void main(String[] args) throws Exception {
         
         // Making the keyword matrix
-        Scanner s = new Scanner(System.in);
+        java.util.Scanner s = new java.util.Scanner(System.in);
         System.out.println("Gebe das Keyword ein: ");
-        String input = s.next();
+        String keyword = s.next();
       
         // Getting message
         System.out.println("Gebe die Message ein: ");
@@ -31,10 +21,14 @@ public class App {
 
         s.close();
 
-        String output = encode(input, message);
+       // String output = encode(keyword, message);
 
 
-        System.out.println(output);
+       // System.out.println(output);
+
+       System.out.println(
+       App.encode("keyword", "Das ist eine Nachricht").equals("ABLQZMGWUDDPLAFBLARV")
+       );
 
         /*
         StringJoiner sj = new StringJoiner(System.lineSeparator());
@@ -46,8 +40,8 @@ public class App {
 */
     }
 
-    private static String encode(String input, String message) {
-        char[] finalvector = vector(alph, input);
+    private static String encode(String keyword, String message) {
+        char[] finalvector = vector(alph, keyword);
         // erste Arraydimension: Zeilennummer
         char[][] finalmatrix = new char[5][5];
         finalmatrix = vectorToMatrix(finalmatrix, finalvector, 5, 5);
@@ -82,21 +76,22 @@ public class App {
             msgmatrix[i] = newPair;
         }
         
+        // msgmatrix conversion to normal String
 
-        StringJoiner joiner = new StringJoiner("");
-        Arrays.stream(msgmatrix).map(x -> {
+        java.util.StringJoiner joiner = new java.util.StringJoiner("");
+        java.util.Arrays.stream(msgmatrix).map(x -> {
             Character[] ca = new Character[x.length];
             for (int i = 0; i < x.length; i++) {
                 ca[i] = x[i];
             }
             return ca;
-        }).flatMap(x -> Arrays.stream(x)).forEach(x -> joiner.add(Character.toString(x)));
+        }).flatMap(x -> java.util.Arrays.stream(x)).forEach(x -> joiner.add(Character.toString(x)));
         String output = joiner.toString();
         return output;
     }
 
     void print(char[] x) {
-System.out.println(Arrays.toString(x));
+System.out.println(java.util.Arrays.toString(x));
     }
 
     /**
@@ -156,7 +151,7 @@ System.out.println(Arrays.toString(x));
         int a = 0;
         int e = lenght;
         for(int k = 0; k < height; k++){
-            char[] tmparray = Arrays.copyOfRange(vector, a, e);
+            char[] tmparray = java.util.Arrays.copyOfRange(vector, a, e);
             matrix[k] = tmparray; // assign tmparray to finalmatrix
             a = a + lenght;
             e = e + lenght;
