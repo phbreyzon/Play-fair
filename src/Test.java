@@ -19,7 +19,7 @@ public class Test {
     }
 
     private static void testInternal(char searched, char[][] matrix, int expeced) {
-        int result = App.rowOfReference(searched, matrix);
+        int result = PlayFair.rowOfReference(searched, matrix);
         boolean success = result == expeced;
         System.out.println("Test case " + searched);
         if (success) {
